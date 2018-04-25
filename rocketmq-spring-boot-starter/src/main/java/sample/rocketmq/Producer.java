@@ -19,12 +19,10 @@ package sample.rocketmq;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.MessageQueueSelector;
-import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageQueue;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
 import org.rocketmq.starter.core.producer.MessageProxy;
-import org.rocketmq.starter.core.producer.ProducerConfigRocket;
 import org.rocketmq.starter.core.producer.RocketMQProducerTemplate;
 
 import java.util.List;
@@ -41,13 +39,11 @@ public class Producer {
          * Instantiate with a producer group name.
          */
         RocketMQProducerTemplate producer = new RocketMQProducerTemplate();
-        ProducerConfigRocket producerConfigRocket = new ProducerConfigRocket();
-        producerConfigRocket.setProducerGroup("mq-service-producer");
-        producerConfigRocket.setTimeOut(231);
-        producerConfigRocket.setOrderlyMessage(true);
-        producerConfigRocket.setMessageClass(String.class);
-        producer.setProducerConfig(producerConfigRocket);
-        producer.setNamesrvAddr("172.3.110.153:9876");
+        producer.setProducerGroup("mq-service-producer");
+        producer.setTimeOut(231);
+        producer.setOrderlyMessage(true);
+        producer.setMessageClass(String.class);
+        producer.setNamesrvAddr("127.0.0.1:9876");
 
         /*
          * Specify name server addresses.
