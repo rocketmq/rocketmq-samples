@@ -18,14 +18,10 @@ package sample.rocketmq;
 
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
-import org.apache.rocketmq.client.producer.MessageQueueSelector;
+import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
-import org.apache.rocketmq.common.message.MessageQueue;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
-import org.rocketmq.starter.core.producer.MessageProxy;
 import org.rocketmq.starter.core.producer.RocketMQProducerTemplate;
-
-import java.util.List;
 
 /**
  * This class demonstrates how to send messages to brokers using provided {@link DefaultMQProducer}.
@@ -40,7 +36,7 @@ public class Producer {
          */
         RocketMQProducerTemplate producer = new RocketMQProducerTemplate();
         producer.setProducerGroup("mq-service-producer");
-        producer.setTimeOut(231);
+        //producer.setTimeOut(1000);
         producer.setOrderlyMessage(true);
         producer.setMessageClass(String.class);
         producer.setNamesrvAddr("127.0.0.1:9876");
@@ -62,38 +58,20 @@ public class Producer {
          */
         producer.start();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000000; i++) {
             try {
-
                 /*
                  * Create a message instance, specifying topic, tag and message body.
                  */
-                final Message msg = new Message("TopicTest" /* Topic */
-                    ,"TagA" /* Tag */,
-                    ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
+                final Message message = new Message("TopicTest","TagA",
+                    /* Message body */
+                    ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET)
                 );
-
                 /*
                  * Call send message to deliver message to one of brokers.
                  */
-                producer.send(new MessageProxy(){{
-                    final int queueId = 0;
-                    setMessage(msg);
-                    //setOrderlyMessage == true
-                    setMessageQueueSelector( new MessageQueueSelector() {
-                        public MessageQueue select(List<MessageQueue> list, Message message, Object o) {
-                            for (MessageQueue mq : list) {
-                                if (mq.getQueueId() == queueId) {
-                                    return mq;
-                                }
-                            }
-                            return list.get(8);
-                        }
-                    });
-
-                }});
-
-                //System.out.printf("%s%n", sendResult);
+                SendResult sendResult = producer.send(message);
+                System.out.printf("%s%n", sendResult);
             } catch (Exception e) {
                 e.printStackTrace();
                 Thread.sleep(1000);

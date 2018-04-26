@@ -25,8 +25,8 @@
 
         <dependency>
             <groupId>org.rocketmq</groupId>
-            <artifactId>spring-boot-starter-rocketmq</artifactId>
-            <version>1.2.0.RELEASE</version>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
+            <version>1.0.0.RELEASE</version>
         </dependency>
 
         <dependency>
