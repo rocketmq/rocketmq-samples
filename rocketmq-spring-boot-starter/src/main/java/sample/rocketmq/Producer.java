@@ -58,7 +58,7 @@ public class Producer {
          */
         producer.start();
 
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 10*10; i++) {
             try {
                 /*
                  * Create a message instance, specifying topic, tag and message body.
